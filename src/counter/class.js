@@ -9,7 +9,7 @@ export default class CounterClass extends Component {
     }*/
 
     state = {
-        cnt: 1
+        cnt: 0
     }
 
     render() {
