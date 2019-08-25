@@ -1,9 +1,11 @@
 import React from 'react'
+import CounterClass from './counter/class'
 
 export default function() {
     return (
         <div>
-            111
+            <h2>Counter as class</h2>
+            <CounterClass />
         </div>
     )
 }
