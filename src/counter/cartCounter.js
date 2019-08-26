@@ -18,18 +18,19 @@ class CartCounter extends Component {
     }
 
     state = {
-        current: limit["min"],
-        cnt: this.props.min
+        cnt: this.props.min,
+        inputValue: this.props.min
     }
 
     render() {
         return (
             <div>
                 <button onClick = {this.decrease}>-</button>
-                <span> {this.state.cnt} </span>
+                <span> {this.state.inputValue} </span>
                 <input 
-                    value = {this.state.cnt} 
+                    value = {this.state.inputValue} 
                     onChange = {(e) => this.setValue(e.target.value)}
+                    onBlur = {this.applyValue}
                 />
                 <button onClick = {this.increase}>+</button>
             </div>
@@ -47,16 +48,23 @@ class CartCounter extends Component {
     set(newCnt) {
         let cnt = Math.min(Math.max(newCnt, this.props.min), this.props.max)
         this.setState({
-            cnt: cnt
+            cnt: cnt,
+            inputValue: cnt
         })
     }
 
+    applyValue() {
+        let cnt = parseInt(this.state.inputValue)
+        this.set(isNaN(cnt) ? this.props.min : cnt)
+    }
+
     setValue(newStr) {
-        let cnt = parseInt(newStr)
+        /*let cnt = parseInt(newStr)
         if (isNaN(cnt)) {
             cnt = this.props.min
         }
-        this.set(cnt)
+        this.set(cnt)*/
+        this.setState({inputValue: newStr})
     }
     
     /*handleChange = (type) => () => {
