@@ -8,7 +8,7 @@ export default class extends Component {
         products: [
             {
                 id: 100,
-                title: 'iPhone 200',
+                title: 'Ipnone 200',
                 price: 12000,
                 rest: 10,
                 current: 1
@@ -18,6 +18,20 @@ export default class extends Component {
                 title: 'Samsung AAZ8',
                 price: 22000,
                 rest: 5,
+                current: 1
+            },
+            {
+                id: 103,
+                title: 'Nokia 3310',
+                price: 5000,
+                rest: 2,
+                current: 1
+            },
+            {
+                id: 105,
+                title: 'Huawei ZZ',
+                price: 15000,
+                rest: 8,
                 current: 1
             }
         ]
@@ -32,6 +46,23 @@ export default class extends Component {
         this.setState({
             products: newProducts
         })
+    }
+
+    deleteItem(i) {
+        let newProducts = [...this.state.products]
+        newProducts.splice(newProducts[i], 1)
+        this.setState({
+            products: newProducts
+        })
+    }
+
+    totalAmount() {
+        let newProducts = [...this.state.products]
+        let total = 0
+        newProducts.map((product, i) => {
+            total += product.price * product.current
+        })
+        return total
     }
 
     render() {
@@ -49,6 +80,7 @@ export default class extends Component {
                         />
                     </td>
                     <td>{product.price * product.current}</td>
+                    <td><button onClick={() => this.deleteItem(i)}>Delete</button></td>
                 </tr>
             )
         })
@@ -66,10 +98,13 @@ export default class extends Component {
                             <td>Price</td>
                             <td>Count</td>
                             <td>Total</td>
+                            <td>Delete</td>
                         </tr>
                         {productsRows}
                     </tbody>
                 </table>
+                <hr/>
+                <div><span>Total: </span><span>{this.totalAmount()}</span></div>
                 {/*<CartCounter min = {20} max = {50}/>*/}
             </div>
         )
