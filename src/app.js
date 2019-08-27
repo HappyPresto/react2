@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import CounterClass from './counter/class'
 import CounterFunction from './counter/function'
-import CartCounter from './inputs/minmax'
+import CartCounter from './inputs/minmax/minmax'
 
 /*Причина по которой мы пишем {this.props.message} в фигурных скобках заключается в том, 
 что нам нужно сказать JSX, что мы хотим добавить JavaScript выражение. 
