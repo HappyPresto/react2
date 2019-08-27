@@ -3,6 +3,10 @@ import CounterClass from './counter/class'
 import CounterFunction from './counter/function'
 import CartCounter from './inputs/minmax'
 
+/*Причина по которой мы пишем {this.props.message} в фигурных скобках заключается в том, 
+что нам нужно сказать JSX, что мы хотим добавить JavaScript выражение. 
+Это называется экранированием.*/
+
 export default class extends Component {
     state = {
         products: getProducts(),
