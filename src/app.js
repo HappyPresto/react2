@@ -33,10 +33,7 @@ export default class extends Component {
 
     remove(i) {
         let newProducts = [...this.state.products]
-        console.log(newProducts)
-        console.log(newProducts[i])
         newProducts.splice(newProducts[i], 1)
-        console.log(newProducts)
         this.setState({
             products: newProducts
         })
