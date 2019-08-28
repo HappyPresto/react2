@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import CounterClass from './counter/class'
 import CounterFunction from './counter/function'
 import CartCounter from './inputs/minmax/minmax'
+import FormCaller from './formCaller'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 /*Причина по которой мы пишем {this.props.message} в фигурных скобках заключается в том, 
 что нам нужно сказать JSX, что мы хотим добавить JavaScript выражение. 
@@ -39,6 +41,25 @@ export default class extends Component {
         })
     }
 
+    showPersonForm(total) {
+        let productsName = this.state.products.map((product, k) => {
+            return (
+                <div key = {product.id}>
+                    <p>{product.title}</p>
+                    <p>{product.current}</p>
+                </div>
+            )
+        })
+        return (
+            <div>
+                <FormCaller 
+                    buyProduct = {productsName}
+                    total = {total}
+                />
+            </div>
+        )
+    }
+
     /*totalAmount() {
         let newProducts = [...this.state.products]
         let total = 0
@@ -70,14 +91,13 @@ export default class extends Component {
                 </tr>
             )
         })
-        let page = this.state.formDone ? showCongrats() : showForm(productsRows, total, this.sendForm) 
+        // let page = this.state.formDone ? showCongrats() : showForm(productsRows, total, this.sendForm) 
+        let page = this.state.formDone ? this.showPersonForm(total) : showForm(productsRows, total, this.sendForm) 
 
         return (
             <div>
+                {console.log(this.state.products)}
                 {page}
-            
-                <hr />
-                <button onClick={() => this.changeCnt(1, 4)}>Unreal change cnt</button>
             </div>
         )
     }
@@ -108,6 +128,8 @@ function showForm(productsRows, total, onSend) {
             <div><span>Total: </span><span>{total}{/*this.totalAmount()*/}</span></div>
             <hr/>
             <button onClick={onSend}>Send</button>
+            <hr />
+            <button onClick={() => this.changeCnt(1, 4)}>Unreal change cnt</button>
         </div>
     )
 }
