@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import CounterClass from './counter/class'
-import CounterFunction from './counter/function'
-import CartCounter from './inputs/minmax/minmax'
-import FormCaller from './formCaller'
+import styles from './app.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Cart from '~/cart/cart'
+import Order from '~/order/order'
+import Result from '~/result/result'
 
 /*Причина по которой мы пишем {this.props.message} в фигурных скобках заключается в том, 
 что нам нужно сказать JSX, что мы хотим добавить JavaScript выражение. 
@@ -12,16 +12,25 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 export default class extends Component {
     state = {
         products: getProducts(),
+        formData: {
+            name: {
+                label: 'Name',
+                value: ''
+            },
+            email: {
+                label: 'Email',
+                value: ''
+            },
+            phone: {
+                label: 'Phone',
+                value: ''
+            }
+        },
+        activeRoute: 'CART',
         formDone: false
     }
 
-    sendForm = () => { // стрелочная ф-ия что бы не терять контекст
-        this.setState({
-            formDone: true
-        })
-    }
-
-    changeCnt(i, cnt) {
+    changeCnt = (i, cnt) => {
         // c стором - this.state.products[i].current = cnt
         let newProducts = [...this.state.products]
         let newProduct = {...newProducts[i]} // вытаскивается каждый эл-т title, rest и тд
@@ -33,7 +42,7 @@ export default class extends Component {
         })
     }
 
-    remove(i) {
+    remove = (i) => {
         let newProducts = [...this.state.products]
         newProducts.splice(i, 1)
         this.setState({
@@ -41,23 +50,30 @@ export default class extends Component {
         })
     }
 
-    showPersonForm(total) {
-        let productsName = this.state.products.map((product, k) => {
-            return (
-                <div key = {product.id}>
-                    <p>{product.title}</p>
-                    <p>{product.current}</p>
-                </div>
-            )
+    changeFormData = (name, value) => {
+        let formData = {...this.state.formData}
+        formData[name] = {...formData[name], value: value}
+        this.setState({
+            formData: formData
         })
-        return (
-            <div>
-                <FormCaller 
-                    buyProduct = {productsName}
-                    total = {total}
-                />
-            </div>
-        )
+    }
+
+    moveToCart = () => {
+        this.setState({
+            activeRoute: "CART"
+        })
+    }
+
+    moveToOrder = () => {
+        this.setState({
+            activeRoute: "ORDER"
+        })
+    }
+
+    moveToResult = () => {
+        this.setState({
+            activeRoute: "RESULT"
+        })
     }
 
     /*totalAmount() {
@@ -70,32 +86,34 @@ export default class extends Component {
     }*/
 
     render() {
-        let total = this.state.products.reduce((t, pr) => {
-            return t + (pr.current * pr.price)
-        }, 0)
-        let productsRows = this.state.products.map((product, i) => {
-            return (
-                <tr key={product.id}>
-                    <td>{product.title}</td>
-                    <td>{product.price}</td>
-                    <td>
-                        <CartCounter 
-                            min = {1} 
-                            max = {product.rest} 
-                            cnt = {product.current}
-                            onChange = {(cnt) => this.changeCnt(i, cnt)}
-                        />
-                    </td>
-                    <td>{product.price * product.current}</td>
-                    <td><button onClick={() => this.remove(i)}>Delete</button></td>
-                </tr>
-            )
-        })
-        // let page = this.state.formDone ? showCongrats() : showForm(productsRows, total, this.sendForm) 
-        let page = this.state.formDone ? this.showPersonForm(total) : showForm(productsRows, total, this.sendForm) 
+        let page
+
+        switch(this.state.activeRoute) {
+            case 'CART':
+                page = <Cart
+                    products = {this.state.products}
+                    onChange = {this.changeCnt}
+                    onRemove = {this.remove}
+                    onSend = {this.moveToOrder}
+                />
+                break
+            case 'ORDER':
+                page = <Order 
+                    formData = {this.state.formData}
+                    onChange = {this.changeFormData}
+                    onSend = {this.moveToResult}
+                    onBack = {this.moveToCart}
+                />
+                break
+            case 'RESULT':
+                page = <Result />
+                break
+            default:
+                page = <div>404</div>
+        }
 
         return (
-            <div>
+            <div className="container">
                 {page}
             </div>
         )
