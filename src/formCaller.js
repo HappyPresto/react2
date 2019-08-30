@@ -15,7 +15,8 @@ class FormCaller extends Component {
     state = {
         textInputValue: "",
         emailInputValue: "",
-        phoneInputValue: ""
+        phoneInputValue: "",
+        validForm: false
     }
 
     textInput = React.createRef()
@@ -33,7 +34,7 @@ class FormCaller extends Component {
             if (this.state[name].length > 2 && this.state[name].length < 20) {
                 return "inputValid"
             }
-            else return "invalidInput"
+            else return "inputInvalid"
         }
         else if (type == "email") {
             let reg = /\w{2,20}@[a-z]{2,10}.[a-z]{2,4}/
@@ -51,6 +52,22 @@ class FormCaller extends Component {
         }
     }
 
+    checkForm = () => {
+        let textInput = this.textInput.current.className
+        let emailInput = this.emailInput.current.className
+        let phoneInput = this.phoneInput.current.className
+        if (textInput.indexOf("Invalid") && emailInput.indexOf("Invalid") && phoneInput.indexOf("Invalid") == "-1") {
+            this.setState({
+                validForm: true
+            })
+        }
+        else {
+            this.setState({
+                validForm: false
+            })
+        }
+    }
+
     render() {
         return (
             <div>
@@ -61,6 +78,7 @@ class FormCaller extends Component {
                         value = {this.state.textInputValue}
                         onChange = {(e) => this.checkText(e.target.value, "textInputValue")}
                         className = {this.getClassName("text", "textInputValue")}
+                        onBlur = {this.checkForm}
                         ref = {this.textInput}
                 
                 /></div>
@@ -70,6 +88,7 @@ class FormCaller extends Component {
                         value = {this.state.emailInputValue}
                         onChange = {(e) => this.checkText(e.target.value, "emailInputValue")}
                         className = {this.getClassName("email", "emailInputValue")}
+                        onBlur = {this.checkForm}
                         ref = {this.emailInput}
                 ></input></div>
                 <div>
@@ -79,9 +98,11 @@ class FormCaller extends Component {
                         value = {this.state.phoneInputValue}
                         onChange = {(e) => this.checkText(e.target.value, "phoneInputValue")}
                         className = {this.getClassName("phone", "phoneInputValue")}
+                        onBlur = {this.checkForm}
                         ref = {this.phoneInput}
                 ></input></div>
                 <Modal 
+                    validForm = {this.state.validForm}
                     buyProduct = {this.props.buyProduct}
                     total = {this.props.total}
                     name = {this.state.textInputValue}

@@ -18,7 +18,16 @@ class Example extends Component {
     }
 
     handleClose = () => this.setState({show: false});
-    handleShow = () => this.setState({show: true});
+
+    handleCloseApply = () => {
+      this.setState({show: false});
+    }
+
+    handleShow = () => {
+      if (this.props.validForm) {
+        this.setState({show: true});
+      }
+    }
 
     render() {
       let buyProduct = this.props.buyProduct
@@ -65,7 +74,7 @@ class Example extends Component {
               </Button>
               <Button 
                 variant="primary" 
-                onClick={this.handleClose}
+                onClick={this.handleCloseApply}
               >
                 Save Changes
               </Button>
