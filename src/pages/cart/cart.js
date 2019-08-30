@@ -1,19 +1,18 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import AppMinMax from '~/inputs/minmax/minmax'
+import AppMinMax from '~c/inputs/minmax/minmax'
+
+import cartModel from '~s/cart'
 
 export default class Cart extends Component {
     static propTypes = {
-        products: PropTypes.array.isRequired,
+        //products: PropTypes.array.isRequired,
         onSend: PropTypes.func.isRequired,
-        onChange: PropTypes.func.isRequired,
-        onRemove: PropTypes.func.isRequired
+        //onChange: PropTypes.func.isRequired,
+        //onRemove: PropTypes.func.isRequired
     }
     render() {
-        let total = this.props.products.reduce((t, pr) => {
-            return t + (pr.current * pr.price)
-        }, 0)
-        let productsRows = this.props.products.map((product, i) => {
+        let productsRows = cartModel.products.map((product, i) => {
             return (
                 <tr key={product.id}>
                     <td>{product.title}</td>
@@ -23,11 +22,11 @@ export default class Cart extends Component {
                             min = {1} 
                             max = {product.rest} 
                             cnt = {product.current}
-                            onChange = {(cnt) => this.props.onChange(i, cnt)}
+                            onChange = {(cnt) => cartModel.change(i, cnt)}
                         />
                     </td>
                     <td>{product.price * product.current}</td>
-                    <td><button onClick={() => this.props.onRemove(i)}>Delete</button></td>
+                    <td><button onClick={() => cartModel.remove(i)}>Delete</button></td>
                 </tr>
             )
         })
@@ -53,7 +52,7 @@ export default class Cart extends Component {
                     </tbody>
                 </table>
                 <hr/>
-                <div><span>Total: </span><span>{total}{/*this.totalAmount()*/}</span></div>
+                <div><span>Total: </span><span>{cartModel.total}{/*this.totalAmount()*/}</span></div>
                 <hr/>
                 <button 
                     className = "btn btn-primary"

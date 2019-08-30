@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import styles from './app.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Cart from '~/cart/cart'
-import Order from '~/order/order'
-import Result from '~/result/result'
+import Cart from '~p/cart/cart'
+import Order from '~p/order/order'
+import Result from '~p/result/result'
 
 /*Причина по которой мы пишем {this.props.message} в фигурных скобках заключается в том, 
 что нам нужно сказать JSX, что мы хотим добавить JavaScript выражение. 
@@ -11,7 +11,6 @@ import Result from '~/result/result'
 
 export default class extends Component {
     state = {
-        products: getProducts(),
         formData: {
             name: {
                 label: 'Name',
@@ -29,27 +28,7 @@ export default class extends Component {
         activeRoute: 'CART',
         formDone: false
     }
-
-    changeCnt = (i, cnt) => {
-        // c стором - this.state.products[i].current = cnt
-        let newProducts = [...this.state.products]
-        let newProduct = {...newProducts[i]} // вытаскивается каждый эл-т title, rest и тд
-        newProduct.current = cnt
-        newProducts[i] = newProduct
-        // newProducts[i] = {...newProducts[i], current: cnt}
-        this.setState({
-            products: newProducts
-        })
-    }
-
-    remove = (i) => {
-        let newProducts = [...this.state.products]
-        newProducts.splice(i, 1)
-        this.setState({
-            products: newProducts
-        })
-    }
-
+    
     changeFormData = (name, value) => {
         let formData = {...this.state.formData}
         formData[name] = {...formData[name], value: value}
@@ -91,18 +70,18 @@ export default class extends Component {
         switch(this.state.activeRoute) {
             case 'CART':
                 page = <Cart
-                    products = {this.state.products}
-                    onChange = {this.changeCnt}
-                    onRemove = {this.remove}
+                    //products = {this.state.products}
+                    //onChange = {this.changeCnt}
+                    //onRemove = {this.remove}
                     onSend = {this.moveToOrder}
                 />
                 break
             case 'ORDER':
                 page = <Order 
-                    formData = {this.state.formData}
-                    onChange = {this.changeFormData}
+                    //formData = {this.state.formData}
+                    //onChange = {this.changeFormData}
                     onSend = {this.moveToResult}
-                    onBack = {this.moveToCart}
+                    //onBack = {this.moveToCart}
                 />
                 break
             case 'RESULT':
@@ -160,35 +139,3 @@ function showCongrats() {
     )
 }
 
-function getProducts() {
-    return [
-        {
-            id: 100,
-            title: 'Ipnone 200',
-            price: 12000,
-            rest: 10,
-            current: 1
-        },
-        {
-            id: 101,
-            title: 'Samsung AAZ8',
-            price: 22000,
-            rest: 5,
-            current: 1
-        },
-        {
-            id: 103,
-            title: 'Nokia 3310',
-            price: 5000,
-            rest: 2,
-            current: 1
-        },
-        {
-            id: 105,
-            title: 'Huawei ZZ',
-            price: 15000,
-            rest: 8,
-            current: 1
-        }
-    ]
-}
