@@ -3,11 +3,14 @@ import PropTypes from 'prop-types'
 import AppMinMax from '~c/inputs/minmax/minmax'
 
 import cartModel from '~s/cart'
+import router from '~s/router'
 
-export default class Cart extends Component {
+import {observer} from 'mobx-react'
+
+@observer class Cart extends Component {
     static propTypes = {
         //products: PropTypes.array.isRequired,
-        onSend: PropTypes.func.isRequired,
+        //onSend: PropTypes.func.isRequired,
         //onChange: PropTypes.func.isRequired,
         //onRemove: PropTypes.func.isRequired
     }
@@ -56,9 +59,11 @@ export default class Cart extends Component {
                 <hr/>
                 <button 
                     className = "btn btn-primary"
-                    onClick={this.props.onSend}
+                    onClick={() => router.moveTo("order")}
                 >Send</button>
             </div>
         )
     }
 }
+
+export default Cart

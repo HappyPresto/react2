@@ -15,6 +15,7 @@ export default class extends React.Component{
         onChange: PropTypes.func
     }
 
+    lazyInput = React.createRef()
     // static getDerivedStateFromProps - сделан специально, что бы state пересчитать из входных параметров (не жел-но юзать)
 
     increase = () => {
@@ -28,11 +29,15 @@ export default class extends React.Component{
     set(newCnt){
         let cnt = Math.min(Math.max(newCnt, this.props.min), this.props.max)
         this.props.onChange(cnt)
+        return cnt
     }
 
     onChange = (e) => {
         let cnt = parseInt(e.target.value)
-        this.set(isNaN(cnt) ? this.props.min : cnt)
+        let realCnt = this.set(isNaN(cnt) ? this.props.min : cnt)
+        if (realCnt.toString() !== e.target.value) {
+            this.lazyInput.current.setValue(realCnt)
+        }
     }
 
     render(){
@@ -43,6 +48,7 @@ export default class extends React.Component{
                     nativeProps={{type: 'text', className: styles.input}}
                     value = {this.props.cnt}
                     onChange = {this.onChange}
+                    ref={this.lazyInput}
                 />
                 <button onClick={this.increase}>+</button>
             </div>
