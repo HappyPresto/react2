@@ -4,7 +4,7 @@ export default class Result extends Component {
     render() {
         return (
             <div>
-                Result
+                <h2>Thank you for Order. I hope you enjoyed it.</h2>
             </div>
         )
     }

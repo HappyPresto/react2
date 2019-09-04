@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import AppLazyInput from './../lazy/lazy'
 import styles from './minmax.module.css'
 
-export default class extends React.Component{
+class MinMax extends React.Component{
     static defaultProps = {
         onChange: function() {}
     }
@@ -55,3 +55,5 @@ export default class extends React.Component{
         );
     }
 }
+
+export default MinMax

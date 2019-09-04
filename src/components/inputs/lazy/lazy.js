@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-export default class extends React.Component{
+class Lazy extends React.Component{
     static defaultProps = {
         onChange: function(e) {},
         nativeProps: {}
@@ -16,9 +16,16 @@ export default class extends React.Component{
     nativeInput = React.createRef() // сделай ссылку на что либо
 
     // static getDerivedStateFromProps - сделан специально, что бы state пересчитать из входных параметров (не жел-но юзать)
+    componentDidUpdate(prevProps, prevState){
+        let inp = this.nativeInput.current
+
+        if (prevProps.value !== this.props.value && this.props.value != inp.value) {           
+            inp.value = this.props.value
+        }
+    }
 
     setValue(value) {
-        this.nativeInput.current.value - value
+        this.nativeInput.current.value = value
     }
 
     checkChange = (e) => {
@@ -44,6 +51,8 @@ export default class extends React.Component{
         );
     }
 }
+
+export default Lazy
 
 /*
 Some.defaultProps = {
